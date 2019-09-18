@@ -1,0 +1,26 @@
+﻿@model Brand
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Detail</h2>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <img src="~/img/@Model.Path" width="400px" />
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <form method="post">
+                    <input type="submit" class="btn btn-danger" value="Delete" style="margin-top:40px" />
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 mt-3">
+                <a asp-action="Index"> <i class="fas fa-arrow-left" style="margin-left:10px"></i> Go Back </a>
+            </div>
+        </div>
+    </div>
+</div>

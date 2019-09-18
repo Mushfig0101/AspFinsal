@@ -1,0 +1,521 @@
+﻿@model HomeViewModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!--Slider Area Start-->
+<div class="slider-area">
+    <div class="hero-slider owl-carousel">
+        @foreach (var bigs in Model.BigSliders)
+        {
+            <!--Single Slider Start-->
+            <div class="single-slider" style="background-image: url(img/@bigs.Image)">
+                <div class="hero-slider-content">
+                    <h1>@bigs.Title</h1>
+                    <h2>@bigs.Description</h2>
+                    <div class="slider-btn">
+                        <a href="@bigs.Link">Shop Now</a>
+                    </div>
+                </div>
+            </div>
+            <!--Single Slider End-->
+        }
+    </div>
+</div>
+<!--Slider Area End-->
+<!--Feature Area Start-->
+<div class="feature-area pt-80 pb-50">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+                <!--Single Feature Area Start-->
+                <div class="single-feature-area mb-30">
+                    <div class="feature-content">
+                        <h3>free shipping worldwide</h3>
+                    </div>
+                </div>
+                <!--Single Feature Area End-->
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <!--Single Feature Area Start-->
+                <div class="single-feature-area mb-30">
+                    <div class="feature-content">
+                        <h3>free shipping worldwide</h3>
+                    </div>
+                </div>
+                <!--Single Feature Area End-->
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <!--Single Feature Area Start-->
+                <div class="single-feature-area mb-30">
+                    <div class="feature-content">
+                        <h3>free shipping worldwide</h3>
+                    </div>
+                </div>
+                <!--Single Feature Area End-->
+            </div>
+        </div>
+    </div>
+</div>
+<!--Feature Area End-->
+<!--Our Collection Area Start-->
+<div class="our-collection-area collection-bg pb-75">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <!--Section Title Start-->
+                <div class="section-title">
+                    <span class="sub-title">Our Collections</span>
+                    <h2>Hot categories in this week</h2>
+                </div>
+                <!--Section Title End-->
+            </div>
+        </div>
+        <div class="row">
+
+
+            @{
+                int count = 1;
+                int column = 3;
+            }
+
+            @foreach (var weekcat in Model.WeekCategories)
+            {
+
+                if (count == 3 && count == 4)
+                {
+                    column = 6;
+                }
+                else
+                {
+                    <div class="col-md-" + @column>
+                        <!--Single Categorie Collection Start-->
+                        <div class="single-categorie-collection mt-30">
+                            <div class="categorie-collection-img">
+                                <a href="#"><img src="~/img/@weekcat.Image" alt=""></a>
+                            </div>
+                        </div>
+                        <!--Single Categorie Collection End-->
+                    </div>
+                }
+
+                count++;
+            }
+        </div>
+    </div>
+</div>
+<!--Our Collection Area End-->
+<!--Product Area Start-->
+<div class="product-area pt-20 pb-35">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <!--Section Title 2 Start-->
+                <div class="section-title2">
+                    <h2>Our Products</h2>
+                    <!--Product Tab Menu Start-->
+                    <div class="product-tab-menu">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            @foreach (var category in Model.Categories)
+                            {
+                                <li><a class="navbar-link @category.Active" data-toggle="tab" aria-selected="true" href="#tab-@category.Id">@category.CategoryName</a></li>
+                            }
+
+                        </ul>
+                    </div>
+                    <!--Product Tab Menu End-->
+                </div>
+                <!--Section Title 2 End-->
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="tab-content" id="myTabContent">
+                    @foreach (var item in Model.Categories)
+                    {
+                        <div class="tab-pane fade show @item.Active" id="tab-@item.Id" role="tabpanel">
+                            <div class="row">
+                                <div class="product-slider owl-carousel">
+                                    @{
+                                        var length = (item.Product.Count() % 2 == 0 ? item.Product.Count() / 2 : item.Product.Count() / 2 + 1);
+                                    }
+
+                                    @for (int i = 0, j = 0; i < length; i++, j += 2)
+                                    {
+                                        <div class="col-md-12">
+                                            @foreach (var mults in item.Product.Skip(j).Take(2))
+                                            {
+                                                <!--Single Product Area Start-->
+                                                <div class="single-product-area mb-40">
+                                                    <div class="product-img img-full">
+                                                        <a href="single-product.html">
+                                                            <img class="first-img" src="~/img/@mults.Image" alt="">
+                                                        </a>
+                                                        <span class="sticker">New</span>
+                                                        <div class="product-action">
+                                                            <ul>
+                                                                <li><a href="cart.html" title="Add To Cart"><span class="icon_bag_alt"></span></a></li>
+                                                                <li><a href="wishlist.html" title="Add to Wish List"><span class=" icon_heart_alt "></span></a></li>
+                                                                <li><a href="compare.html" title="Compare this Product"><span class="icon_datareport"></span></a></li>
+                                                            </ul>
+                                                        </div>
+                                                        <ul class="product-quickview">
+                                                            <li><a href="#open-modal" data-toggle="modal" title="Quick View"><span class="icon_search"></span></a></li>
+                                                        </ul>
+                                                    </div>
+
+                                                    <div class="product-content">
+                                                        <h4><a href="single-product.html">@mults.Name</a></h4>
+                                                        <div class="product-price">
+                                                            @{
+                                                                if (mults.DiscountProduct != 0)
+                                                                {
+                                                                    <span class="now-price"> $@(mults.Price - mults.Price * mults.DiscountProduct / 100) </span>
+                                                                    <span class="regular-price"> $@mults.Price </span>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span class="now-price">$@mults.Price</span>
+                                                                }
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--Single Product Area End-->
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Product Area End-->
+
+
+<!--Deal Product Area Start-->
+<div class="deal-product-area deal-bg">
+    <div class="deal-produt-slider owl-carousel">
+        @foreach (var ourcollection in Model.Products.Where(x => x.CategoryId == 3).Take(3))
+        {
+            <!--Single Deal Product Start-->
+            <div class="single-deal-product">
+                <div class="deal-product-img img-full">
+                    <a href="single-product.html"><img src="~/img/@ourcollection.Image" alt=""></a>
+                    <span class="descount-sticker">-@ourcollection.DiscountProduct%</span>
+                </div>
+                <div class="deal-product-content">
+                    <div class="section-title">
+                        <span class="sub-title">Our Collections</span>
+                    </div>
+                    <h3><a href="single-product.html">@ourcollection.Title</a></h3>
+                    <p class="product-description">@ourcollection.Description</p>
+                    <div class="product-price deal-price">
+                        <span class="now-price">$@(ourcollection.Price - ourcollection.Price * ourcollection.DiscountProduct / 100) </span>
+                        <span class="regular-price">$@ourcollection.Price</span>
+                    </div>
+                    <div class="product-countdown">
+                        <div class="pro-countdown" data-countdown="@ourcollection.ProductDedline"></div>
+                    </div>
+                </div>
+            </div>
+            <!--Single Deal Product End-->
+        }
+
+    </div>
+</div>
+<!--Deal Product Area End-->
+<!--List Product Area Start-->
+<div class="list-product-area pt-80 pb-30">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-12">
+                <div class="row">
+                    <div class="col-12">
+                        <!--List Product Section Title Start-->
+                        <div class="list-product-section-title mb-30">
+                            <h2>New Arrivals</h2>
+                        </div>
+                        <!--List Product Section Title End-->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="list-product-slider owl-carousel">
+                            @{
+                                count = 0;
+
+                                @for (int i = 0; i < 3; i++)
+                                {
+                                    <div class="list-slider-group">
+
+                                        @foreach (var slider in Model.Products.OrderByDescending(x => x.SellerCount).Skip(count).Take(3))
+                                        {
+                                            <!--Single Lis t Product Start-->
+                                            <div class="single-list-product mb-50">
+                                                <div class="product-img img-full">
+                                                    <a href="single-product.html"><img src="~/img/@slider.Image" alt=""></a>
+                                                </div>
+                                                <div class="product-content">
+                                                    <h4><a href="single-product.html">@slider.Name</a></h4>
+                                                    <div class="product-price">
+
+                                                        @{
+                                                            if (slider.DiscountProduct != 0)
+                                                            {
+                                                                <span class="now-price"> $@(slider.Price - slider.Price * slider.DiscountProduct / 100) </span>
+
+                                                                <span class="regular-price"> $@slider.Price </span>
+
+
+                                                            }
+                                                            else
+                                                            {
+
+                                                                <span class="now-price">$@slider.Price</span>
+
+
+                                                            }
+
+                                                        }
+
+                                                    </div>
+                                                    <a class="add-cart-btn" href="cart.html">Add To Cart</a>
+                                                </div>
+                                            </div>
+                                            <!--Single List Product End-->
+                                        }
+                                        @{
+                                            count = count + 3;
+                                        }
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-12">
+                <div class="row">
+                    <div class="col-12">
+                        <!--List Product Section Title Start-->
+                        <div class="list-product-section-title mb-30">
+                            <h2>Best Seller</h2>
+                        </div>
+                        <!--List Product Section Title End-->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="list-product-slider owl-carousel">
+                            @{
+                                count = 0;
+
+                                @for (int i = 0; i < 3; i++)
+                                {
+                                    <div class="list-slider-group">
+
+                                        @foreach (var slider in Model.Products.Where(x => x.NewProduct == true).Skip(count).Take(3))
+                                        {
+                                            <!--Single Lis t Product Start-->
+                                            <div class="single-list-product mb-50">
+                                                <div class="product-img img-full">
+                                                    <a href="single-product.html"><img src="~/img/@slider.Image" alt=""></a>
+                                                </div>
+                                                <div class="product-content">
+                                                    <h4><a href="single-product.html">@slider.Name</a></h4>
+                                                    <div class="product-price">
+
+                                                        @{
+                                                            if (slider.DiscountProduct != 0)
+                                                            {
+                                                                <span class="now-price"> $@(slider.Price - slider.Price * slider.DiscountProduct / 100) </span>
+
+                                                                <span class="regular-price"> $@slider.Price </span>
+
+
+                                                            }
+                                                            else
+                                                            {
+
+                                                                <span class="now-price">$@slider.Price</span>
+
+
+                                                            }
+
+                                                        }
+
+                                                    </div>
+                                                    <a class="add-cart-btn" href="cart.html">Add To Cart</a>
+                                                </div>
+                                            </div>
+                                            <!--Single List Product End-->
+                                        }
+                                        @{
+                                            count = count + 3;
+                                        }
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-12">
+                <div class="row">
+                    <div class="col-12">
+                        <!--List Product Section Title Start-->
+                        <div class="list-product-section-title mb-30">
+                            <h2>Most view</h2>
+                        </div>
+                        <!--List Product Section Title End-->
+                    </div>
+                </div>
+
+
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="list-product-slider owl-carousel">
+
+                            @{
+                                count = 0;
+
+                                @for (int i = 0; i < 3; i++)
+                                {
+                                    <div class="list-slider-group">
+
+                                        @foreach (var slider in Model.Products.OrderByDescending(x => x.MostView).Skip(count).Take(3))
+                                        {
+                                            <!--Single Lis t Product Start-->
+                                            <div class="single-list-product mb-50">
+                                                <div class="product-img img-full">
+                                                    <a href="single-product.html"><img src="~/img/@slider.Image" alt=""></a>
+                                                </div>
+                                                <div class="product-content">
+                                                    <h4><a href="single-product.html">@slider.Name</a></h4>
+                                                    <div class="product-price">
+
+                                                        @{
+                                                            if (slider.DiscountProduct != 0)
+                                                            {
+                                                                <span class="now-price"> $@(slider.Price - slider.Price * slider.DiscountProduct / 100) </span>
+
+                                                                <span class="regular-price"> $@slider.Price </span>
+
+
+                                                            }
+                                                            else
+                                                            {
+
+                                                                <span class="now-price">$@slider.Price</span>
+
+
+                                                            }
+
+                                                        }
+
+                                                    </div>
+                                                    <a class="add-cart-btn" href="cart.html">Add To Cart</a>
+                                                </div>
+                                            </div>
+                                            <!--Single List Product End-->
+                                        }
+                                        @{
+                                            count = count + 3;
+                                        }
+                                    </div>
+
+                                }
+
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--List Product Area End-->
+<!--About Area Start-->
+<div class="about-area about-bg">
+    <div class="indecor-about">
+        <div class="section-title">
+            <span class="sub-title">About Me</span>
+            <h2>neque dis nam parturient.</h2>
+        </div>
+        <p class="about-des">Mauris interdum magna eu neque convallis, vel laoreet lectus ultrices. Mauris at ullamcorper orci. Maecenas in nulla erat.</p>
+        <a class="about-btn" href="#">read more</a>
+    </div>
+</div>
+<!--About Area End-->
+<!--Brand Area Start-->
+<div class="brand-area pt-70">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="brand-active owl-carousel">
+                    @foreach (var brand in Model.Brands)
+                    {
+                        <!--Single Brand Start-->
+                        <div class="single-brand">
+                            <a href="#"><img src="~/img/@brand.Path" alt=""></a>
+                        </div>
+                        <!--Single Brand End-->
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Brand Area End-->
+<!--Blog Area Start-->
+<div class="blog-area pt-10 pb-75">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <!--Section Title 2 Start-->
+                <div class="section-title2">
+                    <h2>from our blogs</h2>
+                </div>
+                <!--Section Title 2 End-->
+            </div>
+        </div>
+        <div class="row">
+            <div class="blog-slider owl-carousel">
+                @foreach (var blog in Model.Blogs)
+                {
+                    <div class="col-md-12">
+                        <!--Single Blog Start-->
+                        <div class="single-blog">
+                            <div class="blog-img img-full">
+                                <a href="single-blog.html"><img src="~/img/blog/small/@blog.Path" alt=""><span class="icon-view"></span></a>
+                            </div>
+                            <div class="blog-content">
+                                <h3 class="blog-title"><a href="single-blog.html">@blog.Title</a></h3>
+                                <div class="blog-meta">
+                                    <p class="author-name">post by: <span>@blog.Author</span> @blog.Day</p>
+                                </div>
+                                <a class="read-btn" href="single-blog.html">read more</a>
+                            </div>
+                        </div>
+                        <!--Single Blog End-->
+                    </div>
+                }
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<!--Blog Area End-->

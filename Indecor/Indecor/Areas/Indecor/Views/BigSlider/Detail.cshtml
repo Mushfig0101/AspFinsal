@@ -1,0 +1,23 @@
+﻿@model BigSlider
+@{
+    ViewData["Title"] = "Detail";
+}
+
+<h2>Detail</h2>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h3>Title: @Model.Title</h3>
+            <p>Description: @Model.Description</p>
+            <p>  <a>@Model.Link</a> : This is Link which you want! </p>
+           
+            <img src="~/img/@Model.Image" width="350px"/>
+        </div>
+        <div class="row">
+          <div class="col-12">
+              <a asp-action="Index"> <i class="fas fa-arrow-left"></i> Go Back </a>
+</div>
+        </div>
+    </div>
+</div>
+
